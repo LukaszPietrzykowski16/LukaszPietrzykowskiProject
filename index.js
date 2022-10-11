@@ -23,15 +23,18 @@ async function getCharacters() {
   document.querySelector('.search > input').value = 1;
   document.querySelector('.search > span').innerText = info.pages;
 
-  document.querySelector('.search > input').addEventListener('change', () => {
-    fetch(apiurl + '?page=' + this.value)
-      .then(function (res) {
-        return res.json();
-      })
-      .then((res) => {
-        results = res.results;
-      });
-  });
+  document
+    .querySelector('.search > input')
+    .addEventListener('change', function () {
+      // arrow function doesn't have unique this
+      fetch(apiurl + '?page=' + this.value)
+        .then(function (res) {
+          return res.json();
+        })
+        .then((res) => {
+          results = res.results;
+        });
+    });
 
   function getOnlyAlives() {
     characters.innerHTML = '';
