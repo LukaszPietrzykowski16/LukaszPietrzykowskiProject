@@ -77,7 +77,29 @@ async function getCharacters() {
     characters.append(p);
 
     p.addEventListener('click', () => {
+      const details = document.querySelector('section:not(:first-child)');
+      const container = document.querySelectorAll('.container');
       results[index];
+      const newDiv = document.createElement('div');
+      newDiv.classList.add('newDiv');
+
+      // checking if it's more than 0
+      if (container.length > 0) {
+        container.forEach((e) => e.remove());
+      }
+
+      // displaying images
+      newDiv.innerHTML = `
+      <div class="container"> 
+      <img src="${results[index].image}" style="width: 100px"/>
+      <div> imie: ${results[index].name} <div/> 
+      <div> status: ${results[index].status} <div/> 
+      <div> płeć: ${results[index].gender} <div/> 
+      <div/> 
+      `;
+
+      details.appendChild(newDiv);
+      /*
       const n = document.createElement('div');
       const gender = document.createElement('div');
       const status = document.createElement('div');
@@ -88,11 +110,8 @@ async function getCharacters() {
       gender.innerText = 'płeć: ' + results[index].gender;
       status.innerText = 'status: ' + results[index].status;
       jpg.src = results[index].image;
-
-      const details = document.querySelector('section:not(:first-child)');
-
-      details.append(n, gender, status, jpg);
-
+      */
+      /*
       jpg.onclick = () => {
         const dialog = document.createElement('dialog');
         document.body.append(dialog);
@@ -112,6 +131,7 @@ async function getCharacters() {
 
         dialog.append(close);
       };
+      */
     });
   }
 })();
