@@ -79,13 +79,33 @@ async function getCharacters() {
     });
   }
 
-  function all() {}
+  function all() {
+    characters.innerHTML = '';
+    const container = document.querySelectorAll('.container');
+    // cleaning up szczegoly section
+    container.forEach((e) => e.remove());
+    results.forEach((res, index) => {
+      // appearing dead characters
+      const p = document.createElement('p');
+      const lp = document.createElement('span');
+
+      lp.innerText = index;
+      const text = document.createTextNode(' ' + res.name);
+      p.prepend(lp, text);
+
+      characters.append(p);
+
+      // details about selected by status dead
+      details(p, results, index);
+    });
+  }
 
   alive.addEventListener('click', getOnlyAlives);
   dead.addEventListener('click', deadsOnly);
   buttonAll.addEventListener('click', all);
 
   // adding results to DOM!
+
   for (let index in results) {
     const p = document.createElement('p');
     const lp = document.createElement('span');
