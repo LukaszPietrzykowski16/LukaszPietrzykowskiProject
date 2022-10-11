@@ -20,7 +20,8 @@ async function getCharacters() {
   var loading = true;
   let { results, info } = await getCharacters();
 
-  document.querySelector('.search > input').value = 1;
+  const inputValue = (document.querySelector('.search > input').value = 1);
+
   document.querySelector('.search > span').innerText = info.pages;
 
   document
@@ -28,7 +29,7 @@ async function getCharacters() {
     .addEventListener('change', function () {
       // arrow function doesn't have unique this
       fetch(apiurl + '?page=' + this.value)
-        .then(function (res) {
+        .then((res) => {
           return res.json();
         })
         .then((res) => {
@@ -36,27 +37,46 @@ async function getCharacters() {
         });
     });
 
+  function pageNotAvailable() {
+    const p = document.createElement('p');
+    const text = document.createTextNode('Nie ma takiej strony');
+    p.prepend(text);
+    characters.append(p);
+  }
+
+  function pageNotAvailableStatments() {
+    return (
+      document.querySelector('.search > input').value > 42 ||
+      document.querySelector('.search > input').value < 1
+    );
+  }
+
   function getOnlyAlives() {
     characters.innerHTML = '';
     const container = document.querySelectorAll('.container');
     // cleaning up szczegoly section
     container.forEach((e) => e.remove());
-    results.forEach((res, index) => {
-      if (res.status === 'Alive') {
-        // appearing alive characters
-        const p = document.createElement('p');
-        const lp = document.createElement('span');
+    // checking if value is correct
+    if (pageNotAvailableStatments()) {
+      pageNotAvailable();
+    } else {
+      results.forEach((res, index) => {
+        if (res.status === 'Alive') {
+          // appearing alive characters
+          const p = document.createElement('p');
+          const lp = document.createElement('span');
 
-        lp.innerText = index;
-        const text = document.createTextNode(' ' + res.name);
-        p.prepend(lp, text);
+          lp.innerText = index;
+          const text = document.createTextNode(' ' + res.name);
+          p.prepend(lp, text);
 
-        characters.append(p);
+          characters.append(p);
 
-        // details about selected by status alive
-        details(p, results, index);
-      }
-    });
+          // details about selected by status alive
+          details(p, results, index);
+        }
+      });
+    }
   }
 
   function deadsOnly() {
@@ -64,8 +84,39 @@ async function getCharacters() {
     const container = document.querySelectorAll('.container');
     // cleaning up szczegoly section
     container.forEach((e) => e.remove());
-    results.forEach((res, index) => {
-      if (res.status === 'Dead') {
+    // checking if value is correct
+    if (pageNotAvailableStatments()) {
+      pageNotAvailable();
+    } else {
+      results.forEach((res, index) => {
+        if (res.status === 'Dead') {
+          // appearing dead characters
+          const p = document.createElement('p');
+          const lp = document.createElement('span');
+
+          lp.innerText = index;
+          const text = document.createTextNode(' ' + res.name);
+          p.prepend(lp, text);
+
+          characters.append(p);
+
+          // details about selected by status dead
+          details(p, results, index);
+        }
+      });
+    }
+  }
+
+  function all() {
+    characters.innerHTML = '';
+    const container = document.querySelectorAll('.container');
+    // cleaning up szczegoly section
+    container.forEach((e) => e.remove());
+    // checking if value is correct
+    if (pageNotAvailableStatments()) {
+      pageNotAvailable();
+    } else {
+      results.forEach((res, index) => {
         // appearing dead characters
         const p = document.createElement('p');
         const lp = document.createElement('span');
@@ -78,29 +129,8 @@ async function getCharacters() {
 
         // details about selected by status dead
         details(p, results, index);
-      }
-    });
-  }
-
-  function all() {
-    characters.innerHTML = '';
-    const container = document.querySelectorAll('.container');
-    // cleaning up szczegoly section
-    container.forEach((e) => e.remove());
-    results.forEach((res, index) => {
-      // appearing dead characters
-      const p = document.createElement('p');
-      const lp = document.createElement('span');
-
-      lp.innerText = index;
-      const text = document.createTextNode(' ' + res.name);
-      p.prepend(lp, text);
-
-      characters.append(p);
-
-      // details about selected by status dead
-      details(p, results, index);
-    });
+      });
+    }
   }
 
   alive.addEventListener('click', getOnlyAlives);
