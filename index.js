@@ -23,7 +23,7 @@ async function getCharacters() {
   const inputValue = (document.querySelector('.search > input').value = 1);
 
   document.querySelector('.search > span').innerText = info.pages;
-
+ 
   document
     .querySelector('.search > input')
     .addEventListener('change', function () {
