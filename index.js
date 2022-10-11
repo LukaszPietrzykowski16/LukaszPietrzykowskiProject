@@ -91,7 +91,7 @@ async function getCharacters() {
       // displaying images
       newDiv.innerHTML = `
       <div class="container"> 
-      <img src="${results[index].image}" style="width: 100px"/>
+      <img src="${results[index].image}" style="width: 100px" alt="${results[index].name}"/>
       <div> imie: ${results[index].name} <div/> 
       <div> status: ${results[index].status} <div/> 
       <div> płeć: ${results[index].gender} <div/> 
@@ -99,18 +99,27 @@ async function getCharacters() {
       `;
 
       details.appendChild(newDiv);
-      /*
-      const n = document.createElement('div');
-      const gender = document.createElement('div');
-      const status = document.createElement('div');
-      const jpg = document.createElement('img');
-      jpg.width = '100';
+      // getting image
+      const image = document.querySelector('img');
+      image.addEventListener('click', () => {
+        const dialog = document.createElement('dialog');
+        document.body.append(dialog);
+        console.log(image);
+        // and that's not deleting our szczegóły childrean
+        dialog.innerHTML = `<img src="${image.src}" style="width: 400px" alt="${results[index].name}"/>`;
 
-      n.innerText = 'imie: ' + results[index].name;
-      gender.innerText = 'płeć: ' + results[index].gender;
-      status.innerText = 'status: ' + results[index].status;
-      jpg.src = results[index].image;
-      */
+        dialog.showModal();
+
+        const close = document.createElement('button');
+
+        close.innerText = 'zamknij';
+
+        close.addEventListener('click', () => {
+          dialog.close();
+        });
+
+        dialog.append(close);
+      });
       /*
       jpg.onclick = () => {
         const dialog = document.createElement('dialog');
